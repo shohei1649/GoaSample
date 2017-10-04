@@ -1,0 +1,181 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  GoaComment:
+    description: Comment (default view)
+    example:
+      content: Voluptates non excepturi.
+      created_dt: 1979-09-26T15:46:50Z
+      id: 9.910734e+16
+      updated_dt: 2003-07-25T11:17:15Z
+    properties:
+      content:
+        description: comment content
+        example: Voluptates non excepturi.
+        type: string
+      created_dt:
+        description: comment created datetime
+        example: 1979-09-26T15:46:50Z
+        format: date-time
+        type: string
+      id:
+        description: comment ID
+        example: 9.910734e+16
+        format: int64
+        type: integer
+      updated_dt:
+        description: comment updated datetime
+        example: 2003-07-25T11:17:15Z
+        format: date-time
+        type: string
+    required:
+    - id
+    - content
+    title: 'Mediatype identifier: application/vnd.goa.comment+json; view=default'
+    type: object
+  GoaExampleBottle:
+    description: A bottle of wine (default view)
+    example:
+      href: Saepe ratione debitis enim sapiente.
+      id: 9.1719033e+18
+      name: Laboriosam placeat ducimus doloribus voluptates iusto.
+    properties:
+      href:
+        description: API href for making requests on the bottle
+        example: Saepe ratione debitis enim sapiente.
+        type: string
+      id:
+        description: Unique bottle ID
+        example: 9.1719033e+18
+        format: int64
+        type: integer
+      name:
+        description: Name of wine
+        example: Laboriosam placeat ducimus doloribus voluptates iusto.
+        type: string
+    required:
+    - id
+    - href
+    - name
+    title: 'Mediatype identifier: application/vnd.goa.example.bottle+json; view=default'
+    type: object
+host: localhost:8080
+info:
+  description: A simple goa service
+  title: The virtual wine cellar
+  version: ""
+paths:
+  /bottles/{bottleID}:
+    get:
+      description: Get bottle by id
+      operationId: bottle#show
+      parameters:
+      - description: Bottle ID
+        in: path
+        name: bottleID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.example.bottle+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/GoaExampleBottle'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show bottle
+      tags:
+      - bottle
+  /comments/comments:
+    post:
+      description: Entry comment
+      operationId: comment#create
+      responses:
+        "201":
+          description: Created
+      schemes:
+      - http
+      summary: create comment
+      tags:
+      - comment
+  /comments/comments/{comment_id}:
+    delete:
+      description: Delete comment
+      operationId: comment#delete
+      parameters:
+      - in: path
+        name: comment_id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+      schemes:
+      - http
+      summary: delete comment
+      tags:
+      - comment
+    get:
+      description: Get comment by id
+      operationId: comment#show
+      parameters:
+      - description: Comment ID
+        in: path
+        name: comment_id
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.comment+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/GoaComment'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: show comment
+      tags:
+      - comment
+    put:
+      description: Update comment
+      operationId: comment#update
+      parameters:
+      - in: path
+        name: comment_id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+      schemes:
+      - http
+      summary: update comment
+      tags:
+      - comment
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  Created:
+    description: Created
+  NoContent:
+    description: No Content
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/GoaExampleBottle'
+schemes:
+- http
+swagger: "2.0"
